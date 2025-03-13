@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import TodoItem from "./TodoItem";
+import { useTodoState } from "./TodoContext";
 
 const TodoListBlock = styled.div`
     flex: 1;
@@ -9,6 +10,7 @@ const TodoListBlock = styled.div`
 `;
 
 export default function TodoList({children}) {
+    const state = useTodoState();
     return (
         <>
             <TodoListBlock>
