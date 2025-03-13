@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
 import { MdAdd } from 'react-icons/md';
+import { useTodoDispatch, useTodoNextId } from './TodoContext';
 
 const CircleButton = styled.button`
     backgorund: #38d9a9;
@@ -51,7 +52,7 @@ const InsertFromPositioner = styled.div`
     position: absolute;
 `;
 
-const InsertForm = styled.div`
+const InsertForm = styled.form`
     background: #f8f9fa;
     padding: 32px;
     padding-bottom: 72px;
@@ -70,17 +71,41 @@ const Input = styled.input`
     box-sizing: border-box;
 `;
 
-export default function TodoCreate() {
+function TodoCreate() {
     const [open, setOpen] = useState(false);
+    const [value, setValue] = useState('');
+    const dispatch = useTodoDispatch();
+    const nextId = useTodoNextId();
+
     const onToggle = () => setOpen(!open) ;
+    const onChange = (e) => setValue(e.target.value);
+    const onSubmit = e => {
+        e.preventDefault();
+        dispatch({
+            type: 'CREATE',
+            todo: {
+                id: nextId.current,
+                text: value,
+                done: false,
+            }
+        });
+        setValue('');
+        setOpen(false);
+        nextId.current += 1;
+    }
 
 
     return (
         <>
             {open && (
                 <InsertFromPositioner>
-                    <InsertForm>
-                        <Input placeholder='write the to-do and press enter button.' autoFocus />
+                    <InsertForm onSubmit={onSubmit}>
+                        <Input 
+                        placeholder='write the to-do and press enter button.' 
+                        autoFocus
+                        onChange={onChange}
+                        value={value}
+                        />
                     </InsertForm>
                 </InsertFromPositioner>
                 )}
@@ -90,3 +115,5 @@ export default function TodoCreate() {
         </>
     );
 }
+
+export default React.memo(TodoCreate);

@@ -10,14 +10,18 @@ const TodoListBlock = styled.div`
 `;
 
 export default function TodoList({children}) {
-    const state = useTodoState();
+    const todos = useTodoState();
     return (
         <>
             <TodoListBlock>
-                <TodoItem text="project start" done={true}></TodoItem>
-                <TodoItem text="study english" done={true}></TodoItem>
-                <TodoItem text="study math" done={false}></TodoItem>
-                <TodoItem text="project start" done={false}></TodoItem>
+                {todos.map(todo => (
+                    <TodoItem
+                    key={todo.id}
+                    id={todo.id}
+                    text={todo.text}
+                    done={todo.done}
+                    />
+                ))}
             </TodoListBlock>
         </>
     );

@@ -19,7 +19,7 @@ const initialTodos = [
     {
         id: 4,
         text: 'finance',
-        done: true,
+        done: false,
     },
 ];
 
